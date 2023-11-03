@@ -1,129 +1,140 @@
-public class Linked_List4 {
-  
-    private Node head;
-    private Node tail;
-    private int size;
-
-    public Linked_List4(){
-        this.size = 0;
+#include <iostream>
+using namespace std;
+class nodestudent {
+public:
+  string studentname;
+  int Birthday_date;
+  int Birthday_month;
+  int Birthday_year;
+  nodestudent *next;
+};
+nodestudent *head = NULL;
+class insert : public nodestudent {
+public:
+  void insert_at_empty_head() {
+    if (head == NULL) {
+      nodestudent *newstudent_beginning = new nodestudent;
+      {
+        cout << endl << "Enter the name of student" << endl;
+        cin >> newstudent_beginning->studentname;
+        cout << endl
+             << "Enter the birth date(date of the  month) of student" << endl;
+        cin >> newstudent_beginning->Birthday_date;
+        cout << endl << "Enter the birth month of student" << endl;
+        cin >> newstudent_beginning->Birthday_month;
+        cout << endl << "Enter the birth year of student" << endl;
+        cin >> newstudent_beginning->Birthday_year;
+        next = NULL;
+      }
+      head = newstudent_beginning;
+    } else {
+      insert_at_tail();
     }
-
-    public void insertFirst(int val){
-        Node node = new Node(val);   //Creates a new box.
-        node.next = head;
-        head = node;
-
-        if(tail == null){
-            tail = head;
-        }
-        size += 1;
+  }
+  void insert_at_tail() {
+    nodestudent *temp = head;
+    while (temp->next != NULL) {
+      temp = temp->next;
     }
-
-    public void insertLast(int val){
-        if(tail == null){
-            insertFirst(val);
-            return;
-        }
-        Node node = new Node(val);
-        tail.next = node;
-        tail = node;
-        size++;
+    nodestudent *newstudent_tail = new nodestudent;
+    {
+      cout << endl << "Enter the name of student" << endl;
+      cin >> newstudent_tail->studentname;
+      cout << endl
+           << "Enter the birth date(date of the  month) of student" << endl;
+      cin >> newstudent_tail->Birthday_date;
+      cout << endl << "Enter the birth month of student" << endl;
+      cin >> newstudent_tail->Birthday_month;
+      cout << endl << "Enter the birth year of student" << endl;
+      cin >> newstudent_tail->Birthday_year;
+      next = NULL;
     }
-
-    public void insert(int val, int index){
-        if(index == 0){
-            insertFirst(val);
-        }
-        if (index == size){
-            insertLast(val);
-        }
-
-        Node temp = head;
-        for(int i = 1; i < index; i++){
-            temp = temp.next;
-        }
-
-        Node node = new Node(val, temp.next);
-            temp.next = node;
-            size++;
-
+    temp->next = newstudent_tail;
+  }
+};
+class del : public insert {
+public:
+  void del_node() {
+    nodestudent *temp = head;
+    nodestudent *pre_node = temp;
+    string name_del;
+    cout << endl
+         << "Enter the name of student whose data you want to delete." << endl;
+    cin >> name_del;
+    if (head->studentname == name_del) {
+      temp = head->next;
+      delete (head);
+      head = temp;
     }
-
-
-
-    public int deleteFirst(){
-        int val = head.value;
-        head = head.next;
-        if(head ==  null){
-            tail = null;
-        }
-        size--;
-        return val;
+    while (temp->next != NULL) {
+      if (temp->studentname == name_del) {
+        pre_node->next = temp->next;
+        delete temp;
+        break;
+      }
+      pre_node = temp;
+      temp = temp->next;
     }
-
-    public int deleteLast() {
-        if (size <= 1) {
-            return deleteFirst();
-        }
-        Node secondLast = get(size - 2);
-        int val = tail.value;
-        tail = secondLast;
-        tail.next = null;
-        return val;
+    if (temp->studentname == name_del) {
+      delete temp;
+    } 
+  }
+};
+class display : public del {
+public:
+  int count = 1;
+  void dis() {
+    if (head == NULL) {
+      cout << "NO DATA AVAILABLE";
     }
+    nodestudent *temp = head;
+    while (temp->next != NULL) {
+      cout << endl << "Data of student no. " << count << endl;
+      count++;
+      cout << "Name: " << temp->studentname << endl;
+      cout << "Birthday:"
+           << " " << temp->Birthday_date << "/" << temp->Birthday_month << "/"
+           << temp->Birthday_year << endl;
 
-    public int delete(int index){
-        if (index == 0){
-            return deleteFirst();
-        }
-        if (index == size-1){
-            return deleteLast();
-        }
-
-        Node prev = get(index -1);
-        int val = prev.next.value;
-        prev.next = prev.next.next;
-        return val;
+      temp = temp->next;
     }
+    cout << endl << "Data of student no. " << count << endl;
+    count++;
+    cout << "Name: " << temp->studentname << endl;
+    cout << "Birthday:"
+         << " " << temp->Birthday_date << "/" << temp->Birthday_month << "/"
+         << temp->Birthday_year << endl
+         << endl
+         << endl
+         << endl;
+  }
+};
 
-    public Node get(int index){
-        Node node = head;
-        for(int i = 0; i < index; i++){
-            node = node.next;
-        }
-        return node;
+int main() {
+  char Choice;
+  display d;
+  while (true) {
+    cout << "1.Enter the data of a student." << endl;
+    cout << "2.Display the list." << endl;
+    cout << "3.Delete the data of the student." << endl;
+    cout << "0.Exit" << endl;
+    cin >> Choice;
+    switch (Choice) {
+      case '1':
+        d.insert_at_empty_head();
+        break;
+      case '2':
+        d.dis();
+        break;
+      case '3':
+        d.del_node();
+        break;
+      default:
+        cout << "Invalid choice " << endl;
+        cout << "Enter the data again " << endl;
+        break;
     }
-
-    public void display(){
-        Node temp = head;
-        while(temp != null){
-            System.out.print(temp.value + " -> ");
-            temp = temp.next;
-        }
-        System.out.println("END");
-    }
-
-    private class Node{
-        private int value;
-        private Node next;
-  
-        public Node(int value){
-            this.value = value;
-        }
-  
-        public Node(int value, Node next){
-            this.value = value;
-            this.next = next;
-        }
-  
-  
-    }
-} 
-  
-int main(){
-    Linked_List4 list = Linked_List4();
-    list.insertFirst(5);
-    list.insertFirst(10);
-    list.insertFirst(15);
-    return 0;
-} 
+    cout<<"---"<<endl;
+  }
+  return 0;
+}
