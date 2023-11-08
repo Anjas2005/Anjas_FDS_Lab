@@ -11,6 +11,7 @@ public:
 Appointment *head = NULL;
 class Create_slots : public Appointment
 {
+    string *slot_num_name[9];int iterate_name=0;
     string arr_appoint[9] = {"9:00 to 9:50 AM", "10:00 to 10:50 AM", "11:00 to 11:50 AM",
                              "1:00 to 1:50 PM",
                              "2:00 to 2:50 PM", "5:00 to 5:50 PM",
@@ -53,22 +54,26 @@ public:
         }
     }
         void Free_slots()
-        {   int slot_num=1;
+        
+        {       slot_num_name[9]=NULL;
+               iterate_name=0;
+               int slot_count=1;
             cout << "Select your desired slot number from below" << endl;
             Appointment *temp = head;
             while (temp->next != NULL)
             {
                 if(temp->Patient_Name=="")
                 {   
-                    cout<<"Slot "<<slot_num<<" :"<<temp->Appoint_Time<<endl;
-                    slot_num++;
+                    cout<<"Slot "<<slot_count<<" :"<<temp->Appoint_Time<<endl;
+                    slot_count++;
+                    slot_num_name[iterate_name]=&(temp->Patient_Name);iterate_name++;
                 }
                 temp = temp->next;
             }
             if(temp->Patient_Name=="")
                 {   
-                    cout<<"Slot "<<slot_num<<" "<<temp->Appoint_Time<<endl;
-                    slot_num++;
+                    cout<<"Slot "<<slot_count<<" "<<temp->Appoint_Time<<endl;
+                    slot_num_name[iterate_name]=&(temp->Patient_Name);
                 }
         }
 
@@ -77,6 +82,14 @@ public:
         Free_slots();
         int j;
         cin>>j;
+        --j;
+        cout<<"Enter your Name"<<endl;
+        cin>>*slot_num_name[j];
+    }
+
+    void Display()
+    {
+        
     }
     
 };
